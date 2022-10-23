@@ -1,0 +1,14 @@
+version: "3.2"
+services:
+  main-service:
+    image: main-service
+    container_name: main-service
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - 8080:8080
+
+    restart: on-failure
