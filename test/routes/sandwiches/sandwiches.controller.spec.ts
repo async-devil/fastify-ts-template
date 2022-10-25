@@ -1,29 +1,40 @@
 import fastify from "fastify";
-import fp from "fastify-plugin";
 
-import SandwichesController from "src/sandwiches/sandwiches.controller";
+import SandwichesController from "src/routes/sandwiches/sandwiches.controller";
 
 describe("Sandwiches controller", () => {
 	const app = fastify();
 
 	beforeAll(async () => {
-		void app.register(fp(SandwichesController), {});
+		void app.register(SandwichesController, {});
 		await app.ready();
 	});
 
 	afterAll(() => app.close());
 
 	describe("Get sandwich route", () => {
-		test("Should return valid sandwich on valid id", async () => {
+		test("Should return valid sandwich if exists", async () => {
+			jest
+				.spyOn(Array.prototype, "find")
+				.mockReturnValueOnce({ id: 12345, name: "Meat sandwich", ingredients: {} });
+
 			const result = await app.inject({
-				url: "/sandwiches/12345",
+				url: "/12345",
 			});
 
 			expect(JSON.parse(result.payload)).toHaveProperty("id", 12345);
 		});
 
+		test("Should return 404 on nonexisting sandwich", async () => {
+			const result = await app.inject({
+				url: "/12345",
+			});
+
+			expect(JSON.parse(result.payload)).toHaveProperty("statusCode", 404);
+		});
+
 		test("Should return 400 on invalid sandwich id", async () => {
-			const result = await app.inject({ url: "/sandwiches/notId" });
+			const result = await app.inject({ url: "/notId" });
 
 			expect(JSON.parse(result.payload)).toHaveProperty("statusCode", 400);
 		});
@@ -33,7 +44,7 @@ describe("Sandwiches controller", () => {
 		test("Should return valid sandwich on valid data", async () => {
 			const result = await app.inject({
 				method: "POST",
-				url: "/sandwiches",
+				url: "/",
 				payload: {
 					name: "Cheese sandwich",
 					ingredients: { bread: 2, cheese: 1 },
@@ -46,7 +57,7 @@ describe("Sandwiches controller", () => {
 		test("Should return 400 on invalid sandwich data", async () => {
 			const result = await app.inject({
 				method: "POST",
-				url: "/sandwiches",
+				url: "/",
 				payload: {
 					name: [],
 					ingredients: "cheese",
