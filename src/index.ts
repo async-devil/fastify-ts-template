@@ -1,6 +1,7 @@
 import { join } from "path";
 
 import autoLoad from "@fastify/autoload";
+import redis from "@fastify/redis";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastify, { RouteOptions } from "fastify";
 
@@ -13,6 +14,10 @@ void server.register(autoLoad, {
 	dirNameRoutePrefix: false,
 	options: { prefix: "/api" },
 });
+
+void server
+	.register(redis, { host: process.env.REDIS_HOST || "127.0.0.1" })
+	.then(() => console.log("Successfully connected to redis\n"));
 
 server.addHook("onRoute", (route) => {
 	routes.push(route);
