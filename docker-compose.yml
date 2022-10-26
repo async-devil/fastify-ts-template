@@ -1,8 +1,8 @@
 version: "3.2"
 services:
-  main-service:
-    image: main-service
-    container_name: main-service
+  api:
+    image: fastify-api
+    container_name: fastify-api
 
     build:
       context: .
