@@ -1,6 +1,6 @@
 version: "3.2"
 services:
-  api:
+  backend:
     image: fastify-api
     container_name: fastify-api
 
@@ -10,5 +10,3 @@ services:
 
     ports:
       - 8080:8080
-
-    restart: on-failure
