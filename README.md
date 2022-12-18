@@ -1,39 +1,49 @@
 # Fastify typescript template
 
-## Run docker image:
+## Run docker image
 
 Provides ready to go docker compose config
 
 ```bash
-$ sudo docker compose build
-$ sudo docker compose up
+sudo docker compose build
+sudo docker compose up
 ```
 
-## Local installation:
+## Local installation
 
 ```bash
-$ yarn instal
+yarn instal
 ```
 
-## Local start:
+## Local start
 
 ```bash
-$ yarn build
-$ yarn start
+yarn build
+yarn start
 ```
 
-## Test:
+## Test
 
 ```bash
-$ yarn test
-$ yarn test:cov
+yarn test
+yarn test:cov
 ```
 
-## Access at:
+## Test at docker image
+
+```bash
+sudo docker compose up backend -d
+
+sudo docker exec fastify-api yarn test:cov
+
+sudo docker compose stop backend
+```
+
+## Access at
 
 `http://localhost:8080/api/<method>` or `http://127.0.0.1:8080/api/<method>`
 
-## Api routes:
+## Api routes
 
 - POST `/sandwiches`
 - GET `/sandwiches/:id`
